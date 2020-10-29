@@ -2,93 +2,96 @@ package com.company;
 
 public class StatCounter {
     
-    int statCount = 4;
-    public String[] getStats(String[][] moveData)
+    int statCount = 5;
+    public float[] getStats(int[][] moveData)
     {
-        String[] list = new String[statCount];
-        // TODO: 28-10-2020  
-        list[0] = getAverageDistance(moveData[4]);
-        list[1] = getSwaps(moveData[4]);
-        list[2] = getSwapDistance(moveData[4]);
-        list[3] = getWinningPlayer(moveData);
+        float[] list = new float[statCount];
+
+        // TODO: 28-10-2020
+
+        list[0] = getAverageDistance(moveData);
+        list[1] = getSwaps(moveData);
+        list[2] = getSwapDistance(moveData);
+        list[3] = list[2]/list[1];
+        list[4] = getWinningPlayer(moveData);
         
         return list;
     }
 
-    private String getWinningPlayer(String[][] moveData) {
-        for(int i = moveData[0].length-1; i>=0; i--)
+    private int getWinningPlayer(int[][] moveData) {
+        for(int i = moveData.length-1; i>=0; i--)
         {
-            if(Integer.getInteger(moveData[7][i]) == 7)
+            if(moveData[i][7] == 7)
             {
-                return "1";
+                System.out.println("Player 1 won!");
+                return 1;
             }
-            else if(Integer.getInteger(moveData[8][i]) == 7)
+            else if(moveData[i][8] == 7)
             {
-                return "2";
+                System.out.println("Player 2 won!");
+
+                return 2;
             }
         }
-        return "0";
+        return 0;
     }
 
-    private String getSwapDistance(String[] distances) {
+    private int getSwapDistance(int[][] distances) {
         int total = 0;
-        for(String x:distances)
+        for(int i = 0; i < distances.length; i++)
         {
-            int y = Integer.getInteger(x);
+            int x = distances[i][4];
+
             //negative distances are swaps
-            if(y<0)
+            if(x<0)
             {
-                total -= y;
+                total -= x;
+//                System.out.println(total + " total swap distance");
             }
+
         }
-        return Integer.toString(total);
+        // TODO: 29-10-2020 returns total 
+        return total;
     }
 
-    private String getSwaps(String[] distances) {
+    private int getSwaps(int[][] distances) {
         int total = 0;
-        for(String x:distances)
+        for(int i = 0; i < distances.length; i++)
         {
-            int y = Integer.getInteger(x);
+            int x = distances[i][4];
+
             //negative distances are swaps
-            if(y<0)
+            if(x<0)
             {
                 total ++;
+//                System.out.println(total + " total swaps");
             }
+
         }
-        return Integer.toString(total);
+        return total;
     }
 
-    private String getAverageDistance(String[] distances) {
+    private float getAverageDistance(int[][] distances) {
         int total = 0;
-        for(String x:distances)
+        for(int i = 0; i < distances.length; i++)
         {
-            System.out.println(x);
-            if(!x.isEmpty())
-            {
-                System.out.println(x);
-                int y = 0;
-                try
-                {
-                    y = Integer.getInteger(x);
-                }
-                catch (Error e)
-                {
-                    System.out.println("joe");
-                }
-                //only incorporate forward moves
-                if(y>0)
-                {
-                    total += y;
-                    System.out.println(total + " total");
-                }
+            int x = distances[i][4];
 
+            //only incorporate forward moves
+            if(x>0&&distances[i][0]>0)
+            {
+                total += x;
+                //System.out.println(total + " total distance, incremented by " + x);
             }
 
         }
-        return Integer.toString(total);
+        float avg = (float)(total)/(float)(distances.length);
+        System.out.println("total " + total + ", average " + avg + ", length " + distances.length);
+
+        return avg;
     }
 
-    public void print(String[] list, int game)
+    public void print(float[] list, int game)
     {
         System.out.println();
         System.out.println("Statistics of game " + game);
