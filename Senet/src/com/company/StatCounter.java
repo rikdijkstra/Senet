@@ -71,6 +71,7 @@ public class StatCounter {
         return total;
     }
 
+    // TODO: 29-10-2020 Average distance does not take double moves into account 
     private float getAverageDistance(int[][] distances) {
         int total = 0;
         for(int i = 0; i < distances.length; i++)
