@@ -1,0 +1,176 @@
+(game "Senet"
+    (players 2)
+    (equipment
+        {
+            (board
+                (rectangle 3 10)
+                {
+                    (track "Track1" "30,20,E,S1,W,S1,E,End" P1 directed:true)
+                    (track "Track2" "31,20,E,S1,W,S1,E,End" P2 directed:true)
+                }
+            )
+            (dice d:4 num:1)
+            (regions "Protect" {15 5 6 7 8})
+            (piece "SenetPiece"
+                Each
+                (if
+                    (= (trackSite Move steps:(count Pips)) End)
+                    (move Remove (from) (then (addScore Mover 1)))
+                    (if
+                        (not (= (trackSite Move steps:(count Pips)) Off))
+                        (if
+                            (if
+                                (is
+                                    In
+                                    (trackSite Move steps:(count Pips))
+                                    (sites "Protect")
+                                )
+                                (is
+                                    In
+                                    (trackSite Move steps:(count Pips))
+                                    (sites Empty)
+                                )
+                                (not
+                                    (is
+                                        Friend
+                                        (who
+                                            at:(trackSite
+                                                Move
+                                                steps:(count Pips)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            (move
+                                (from)
+                                (to
+                                    (trackSite Move steps:(count Pips))
+                                    if:true
+                                    (apply
+                                        if:(is Enemy (who at:(to)))
+                                        (remove (to))
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        }
+    )
+    (rules
+        (start
+            {
+                (place
+                    "SenetPiece1"
+                    (sites
+                        {"A3" "C3" "E3" "G3" "I3" "J2" "H2" "F2" "D2" "B2"}
+                    )
+                )
+                (place
+                    "SenetPiece2"
+                    (sites
+                        {"B3" "D3" "F3" "H3" "J3" "I2" "G2" "E2" "C2" "A2"}
+                    )
+                )
+            }
+        )
+        (play
+            (do
+                (roll)
+                next:(priority
+                    (forEach
+                        Site
+                        (sites "Protect")
+                        (if
+                            (= (who at:(to)) (mover))
+                            (if
+                                (=
+                                    (trackSite
+                                        Move
+                                        from:(to)
+                                        steps:(count Pips)
+                                    )
+                                    End
+                                )
+                                (move Remove (from) (then (addScore Mover 1)))
+                                (if
+                                    (not
+                                        (=
+                                            (trackSite
+                                                Move
+                                                from:(to)
+                                                steps:(count Pips)
+                                            )
+                                            Off
+                                        )
+                                    )
+                                    (if
+                                        (if
+                                            (is
+                                                In
+                                                (trackSite
+                                                    Move
+                                                    from:(to)
+                                                    steps:(count Pips)
+                                                )
+                                                (sites "Protect")
+                                            )
+                                            (is
+                                                In
+                                                (trackSite
+                                                    Move
+                                                    from:(to)
+                                                    steps:(count Pips)
+                                                )
+                                                (sites Empty)
+                                            )
+                                            (not
+                                                (is
+                                                    Friend
+                                                    (who
+                                                        at:(trackSite
+                                                            Move
+                                                            from:(to)
+                                                            steps:(count Pips)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        (move
+                                            (from)
+                                            (to
+                                                (trackSite
+                                                    Move
+                                                    from:(to)
+                                                    steps:(count Pips)
+                                                )
+                                                if:true
+                                                (apply
+                                                    if:(is
+                                                        Enemy
+                                                        (who at:(to))
+                                                    )
+                                                    (remove (to))
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    (forEach Piece)
+                )
+            )
+        )
+        (end
+            (if
+                (and (= (count Pieces P1) 0) (= (count Pieces P2) 0))
+                (byScore)
+            )
+        )
+    )
+)
