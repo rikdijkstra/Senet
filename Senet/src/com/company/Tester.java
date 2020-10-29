@@ -14,8 +14,8 @@ public class Tester {
     public static int dataPoints = 9;
     boolean DEBUG = true;
 
-    ArrayList<String[][]> moveDataList = new ArrayList<>();
-    ArrayList<String[]> statList = new ArrayList<>();
+    ArrayList<int[][]> moveDataList = new ArrayList<>();
+    ArrayList<float[]> statList = new ArrayList<>();
     public Tester(int NUM_TRIALS)
     {
         this.NUM_TRIALS = NUM_TRIALS;
@@ -55,16 +55,23 @@ public class Tester {
 
 
 
-            String[][] moveData = moveAnalyser.getMoveData(moves);
-            String[] statistics = statCounter.getStats(moveData);
+            int[][] moveData = moveAnalyser.getMoveData(moves);
+
             moveDataList.add(moveData);
-            statList.add(statistics);
+
             if(DEBUG == true)
             {
                 moveAnalyser.print(moveData, i);
-                statCounter.print(statistics, i);
             }
 
+            float[] statistics = statCounter.getStats(moveData);
+            statList.add(statistics);
+
+
+            if(DEBUG == true)
+            {
+                statCounter.print(statistics, i);
+            }
 
             for (int p = 1; p <= senet.players().count(); ++p) {
                 System.out.println("Agent " + context.state().playerToAgent(p) + " achieved rank: " + ranking[p]);
