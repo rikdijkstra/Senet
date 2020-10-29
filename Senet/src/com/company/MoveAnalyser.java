@@ -16,24 +16,30 @@ public class MoveAnalyser {
     public String[][] getMoveData(List<Move> ms)
     {
         int moves = ms.size();
-
-        String[][] moveData = new String[moves+1][dataPoints];
-
-        moveData[ms.size()][0] = "Mover";
-        moveData[ms.size()][1] = "From";
-        moveData[ms.size()][2] = "To";
-        moveData[ms.size()][3] = "Count";
-        moveData[ms.size()][4] = "Distance";
-        moveData[ms.size()][5] = "Pass";
-        moveData[ms.size()][6] = "Rescue";
-        moveData[ms.size()][7] = "Rescue count player 1";
-        moveData[ms.size()][8] = "Rescue count player 2";
+        int nulls = 0;
+        for (Move m: ms) {
+            if(m.mover() == 0)
+            {
+                nulls++;
+            }
+        }
+        String[][] moveData = new String[moves-nulls+1][dataPoints];
+        int size = ms.size()-nulls;
+        moveData[size][0] = "Mover";
+        moveData[size][1] = "From";
+        moveData[size][2] = "To";
+        moveData[size][3] = "Count";
+        moveData[size][4] = "Distance";
+        moveData[size][5] = "Pass";
+        moveData[size][6] = "Rescue";
+        moveData[size][7] = "Rescue count player 1";
+        moveData[size][8] = "Rescue count player 2";
         int rc1 = 0;
         int rc2 = 0;
 
-        for (int i = 0; i<ms.size(); i++)
+        for (int i = 0; i<ms.size()-nulls; i++)
         {
-            Move m = ms.get(i);
+            Move m = ms.get(i+nulls);
 
             String mover = Integer.toString(m.mover());
             int f = m.from();

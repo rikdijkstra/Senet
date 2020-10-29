@@ -65,12 +65,23 @@ public class StatCounter {
             System.out.println(x);
             if(!x.isEmpty())
             {
-                int y = Integer.getInteger(x);
+                System.out.println(x);
+                int y = 0;
+                try
+                {
+                    y = Integer.getInteger(x);
+                }
+                catch (Error e)
+                {
+                    System.out.println("joe");
+                }
                 //only incorporate forward moves
                 if(y>0)
                 {
                     total += y;
+                    System.out.println(total + " total");
                 }
+
             }
 
         }
