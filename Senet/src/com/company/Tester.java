@@ -55,6 +55,8 @@ public class Tester {
 
 
 
+
+
             int[][] moveData = moveAnalyser.getMoveData(moves);
 
             moveDataList.add(moveData);
@@ -64,7 +66,7 @@ public class Tester {
                 moveAnalyser.print(moveData, i);
             }
 
-            float[] statistics = statCounter.getStats(moveData);
+            float[] statistics = statCounter.getStats(moveData, trial);
             statList.add(statistics);
 
 

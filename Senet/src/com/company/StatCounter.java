@@ -1,9 +1,11 @@
 package com.company;
 
+import util.Trial;
+
 public class StatCounter {
     
     int statCount = 5;
-    public float[] getStats(int[][] moveData)
+    public float[] getStats(int[][] moveData, Trial trial)
     {
         float[] list = new float[statCount];
 
@@ -14,8 +16,13 @@ public class StatCounter {
         list[2] = getSwapDistance(moveData);
         list[3] = list[2]/list[1];
         list[4] = getWinningPlayer(moveData);
-        // TODO: 29-10-2020 amount of turns to win 
-        // TODO: 29-10-2020 amount of double moves  
+
+        int numberOfTurns = trial.numberOfTurns();
+        int numMoves = trial.numMoves();
+        int numSubmovesPlayed = trial.numSubmovesPlayed();
+        // maybe fixed in tester
+        // TODO: 29-10-2020 amount of turns to win, determine double moves
+        // TODO: 29-10-2020 amount of double moves depends on ruleset, either 1,4,5, upon entry or 5
         return list;
     }
 
