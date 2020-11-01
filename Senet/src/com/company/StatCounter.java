@@ -14,7 +14,8 @@ public class StatCounter {
         list[2] = getSwapDistance(moveData);
         list[3] = list[2]/list[1];
         list[4] = getWinningPlayer(moveData);
-        
+        // TODO: 29-10-2020 amount of turns to win 
+        // TODO: 29-10-2020 amount of double moves  
         return list;
     }
 
